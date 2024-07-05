@@ -11,6 +11,10 @@ connectToDb();
 
 app.use("/api/user", require("./routes/userRoutes"));
 app.use("/api/timetable", require("./routes/timetableRoutes"));
+app.use("/api/analytics", require("./routes/analyticsRoutes"));
+
+
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
