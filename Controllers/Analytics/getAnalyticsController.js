@@ -1,3 +1,4 @@
+const Message = require("../../Models/Message");
 const Timetable = require("../../Models/Timetable");
 const User = require("../../Models/User");
 const timetableCreationTrend = require("../../Utilities/Analytics/timetableCreationTrend");
@@ -5,16 +6,56 @@ const timetableDistribution = require("../../Utilities/Analytics/timetableDistri
 
 const getAnalyticsController = async (req, res) => {
     try {
-        const timetableCount = await Timetable.countDocuments();
+        const timetablesCount = await Timetable.countDocuments();
+        const messagesCount = await Message.countDocuments();
         const activeUsers = await User.countDocuments();
         const creationTrend = await timetableCreationTrend();
         const distribution = await timetableDistribution();
 
+        const messagesDistribution = await Message.aggregate([
+            {
+                $group: {
+                    _id: {
+                        $dateToString: {
+                            format: "%Y-%m-%d",
+                            date: "$createdAt",
+                        },
+                    },
+                    count: { $sum: 1 },
+                },
+            },
+            { $sort: { _id: 1 } },
+        ]);
+
+        const usersDistribution = await User.aggregate([
+            {
+                $group: {
+                    _id: {
+                        $dateToString: {
+                            format: "%Y-%m-%d",
+                            date: "$createdAt",
+                        },
+                    },
+                    count: { $sum: 1 },
+                },
+            },
+            { $sort: { _id: 1 } },
+        ]);
+
         const analyticsData = {
-            timetableCount,
+            timetablesCount,
             users: activeUsers,
             timetableCreationTrend: creationTrend,
             timetableDistribution: distribution,
+            messagesCount,
+            messagesDistribution: {
+                dates: messagesDistribution.map((data) => data._id),
+                counts: messagesDistribution.map((data) => data.count),
+            },
+            usersDistribution: {
+                dates: usersDistribution.map((data) => data._id),
+                counts: usersDistribution.map((data) => data.count),
+            },
         };
 
         return res

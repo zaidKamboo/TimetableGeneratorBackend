@@ -17,6 +17,8 @@ const loginController = async (req, res) => {
         const token = jwt.sign({ id: user._id }, JWT_SECRET, {
             expiresIn: "1h",
         });
+        user.isActive = true;
+        await user.save();
         return res.json({ token, user, message: "Logged in successfully." });
     } catch (error) {
         return res.status(500).json({ message: error?.message, error });

@@ -20,11 +20,11 @@ const timetableCreationTrend = async () => {
         },
     ]);
 
-    const formattedTrend = trend.map((item) => ({
-        year: item._id.year,
-        month: item._id.month,
-        count: item.count,
-    }));
+    const formattedTrend = {};
+    trend.forEach((item) => {
+        const yearMonth = `${item._id.year}-${item._id.month}`;
+        formattedTrend[yearMonth] = item.count;
+    });
 
     return formattedTrend;
 };
