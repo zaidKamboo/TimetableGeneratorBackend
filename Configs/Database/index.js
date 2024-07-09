@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// DEMO PROJ PASS CLUSTER ZYcONQ2roJYuC2vn
 const connectToDb = () => {
     try {
         mongoose

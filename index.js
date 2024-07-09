@@ -1,5 +1,5 @@
 const express = require("express");
-const connectToDb = require("./Database");
+const connectToDb = require("./Configs/Database");
 const app = express();
 const cors = require("cors");
 const port = 5000;
@@ -21,6 +21,8 @@ app.use("/api/timetable", require("./routes/timetableRoutes"));
 app.use("/api/analytics", require("./routes/analyticsRoutes"));
 app.use("/api/setting", require("./routes/settingsRoutes"));
 app.use("/api/message", require("./routes/messageRoutes"));
+app.use("/api/testimonial", require("./routes/testimonialRoutes"));
+app.use("/api/profile", require("./routes/profileRoutes"));
 
 app.listen(port, () => {
     console.log(`TT Gen. backend listening on port ${port}`);

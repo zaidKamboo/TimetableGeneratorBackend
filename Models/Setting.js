@@ -1,4 +1,3 @@
-// models/Settings.js
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -8,7 +7,6 @@ const settingsSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true,
-            unique: true,
         },
         name: {
             type: String,
@@ -38,4 +36,4 @@ const settingsSchema = new Schema(
     { timestamps: true }
 );
 
-module.exports = mongoose.model("Settings", settingsSchema);
+module.exports = mongoose.model("Setting", settingsSchema);

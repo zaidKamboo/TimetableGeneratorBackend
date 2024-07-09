@@ -1,6 +1,7 @@
-const addSettingController = require("../Controllers/Settings/addSettingController");
+const addOrEditSettingController = require("../Controllers/Settings/addOrEditSettingController");
+const isLoggedIn = require("../Middlewares/User/isLoggedIn");
 const router = require("express").Router();
 
-router.post("/addSetting", addSettingController);
+router.post("/addOrEditSetting", isLoggedIn, addOrEditSettingController);
 
 module.exports = router;
