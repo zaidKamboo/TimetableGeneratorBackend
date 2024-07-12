@@ -1,5 +1,7 @@
 const { JWT_SECRET } = require("../../Contants");
+const Profile = require("../../Models/Profile");
 const Setting = require("../../Models/Setting");
+const Testimonial = require("../../Models/Testimonial");
 const User = require("../../Models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -24,11 +26,15 @@ const loginController = async (req, res) => {
         user.isActive = true;
         await user.save();
         const setting = await Setting.findOne({ user: user?._id });
+        const profile = await Profile.findOne({ user: user?._id });
+        const testimonial = await Testimonial.findOne({ user: user?._id });
         return res.status(201).json({
             token,
             user,
             message: "Logged in successfully.",
             setting,
+            profile,
+            testimonial,
         });
     } catch (error) {
         return res.status(500).json({ message: error?.message, error });
@@ -40,4 +46,5 @@ const loginController = async (req, res) => {
 //     console.log(user);
 // };
 // f();
+
 module.exports = loginController;

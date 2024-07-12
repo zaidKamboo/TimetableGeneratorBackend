@@ -1,3 +1,4 @@
+const addCollaboratorsController = require("../Controllers/Timetable/addColloboratorsController");
 const createTimetableController = require("../Controllers/Timetable/createTimetableController");
 const editTimetableController = require("../Controllers/Timetable/editTimetableController");
 const getTimetableByCourseAndClassAndDeptName = require("../Controllers/Timetable/getTimetableByCourse&Class&DeptName");
@@ -5,6 +6,8 @@ const getTimetableController = require("../Controllers/Timetable/getTimetableCon
 const getTimetablesController = require("../Controllers/Timetable/getTimetablesController");
 const getUserTimetablesController = require("../Controllers/Timetable/getUserTimetablesController");
 const isLoggedIn = require("../Middlewares/User/isLoggedIn");
+const isAuthorized = require("../Middlewares/Timetable/isAuthorized");
+const deleteTimetableController = require("../Controllers/Timetable/deleteTimetableController");
 
 const router = require("express").Router();
 
@@ -16,7 +19,25 @@ router.get(
     isLoggedIn,
     getTimetableByCourseAndClassAndDeptName
 );
-router.put("/editTimetable/:id", isLoggedIn, editTimetableController);
+router.put(
+    "/editTimetable/:id",
+    isLoggedIn,
+    isAuthorized,
+    editTimetableController
+);
 router.post("/createTimetable", isLoggedIn, createTimetableController);
+router.post(
+    "/addCollaborators/:id",
+    isLoggedIn,
+    isAuthorized,
+    addCollaboratorsController
+);
+
+router.delete(
+    "/deleteTimetable/:id",
+    isLoggedIn,
+    isAuthorized,
+    deleteTimetableController
+);
 
 module.exports = router;

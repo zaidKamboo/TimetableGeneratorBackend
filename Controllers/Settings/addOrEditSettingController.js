@@ -9,18 +9,17 @@ const validateFields = (
     emailNotifications,
     smsNotifications
 ) => {
-    const errors = {};
-    if (!user) errors.user = 'Field "user" is required.';
-    if (!name) errors.name = 'Field "name" is required.';
-    if (!email) errors.email = 'Field "email" is required.';
-    if (darkMode === undefined)
-        errors.darkMode = 'Field "darkMode" is required.';
-    if (!language) errors.language = 'Field "language" is required.';
+    let error = "";
+    if (!user) error = 'Field "user" is required.';
+    if (!name) error = 'Field "name" is required.';
+    if (!email) error = 'Field "email" is required.';
+    if (darkMode === undefined) error = 'Field "darkMode" is required.';
+    if (!language) error = 'Field "language" is required.';
     if (emailNotifications === undefined)
-        errors.emailNotifications = 'Field "emailNotifications" is required.';
+        error = 'Field "emailNotifications" is required.';
     if (smsNotifications === undefined)
-        errors.smsNotifications = 'Field "smsNotifications" is required.';
-    return errors;
+        error = 'Field "smsNotifications" is required.';
+    return error;
 };
 
 const addOrEditSettingController = async (req, res) => {
@@ -35,7 +34,7 @@ const addOrEditSettingController = async (req, res) => {
             smsNotifications,
         } = req.body;
 
-        const errors = validateFields(
+        const error = validateFields(
             user,
             name,
             email,
@@ -45,10 +44,8 @@ const addOrEditSettingController = async (req, res) => {
             smsNotifications
         );
 
-        if (Object.keys(errors).length > 0) {
-            return res
-                .status(400)
-                .json({ message: "Validation failed", errors });
+        if (error.length > 0) {
+            return res.status(400).json({ message: error });
         }
 
         const updatePayload = {
