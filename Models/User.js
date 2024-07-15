@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema(
+const userSchema = new Schema(
     {
         name: {
             type: String,
@@ -34,5 +34,10 @@ const UserSchema = new Schema(
     },
     { timestamps: true }
 );
-
-module.exports = mongoose.model("User", UserSchema);
+userSchema.virtual("notifications", {
+    ref: "Notification",
+    localField: "_id",
+    foreignField: "userId",
+    justOne: false,
+});
+module.exports = mongoose.model("User", userSchema);

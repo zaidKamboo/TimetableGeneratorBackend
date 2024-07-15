@@ -1,15 +1,15 @@
 const User = require("../../Models/User");
 const Profile = require("../../Models/Profile");
 
-const getUsersAndProfilesController = async (_, res) => {
+const getUsersController = async (_, res) => {
     try {
-        const users = User.find();
+        const users = await User.find().lean();
 
-        return res.status(200).json({ users: usersAndProfiles });
+        return res.status(200).json({ users });
     } catch (error) {
         console.error(error.message, error);
         return res.status(500).json({ message: error.message, error });
     }
 };
 
-module.exports = getUsersAndProfilesController;
+module.exports = getUsersController;

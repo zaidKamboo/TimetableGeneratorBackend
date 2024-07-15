@@ -8,6 +8,8 @@ const getUserTimetablesController = require("../Controllers/Timetable/getUserTim
 const isLoggedIn = require("../Middlewares/User/isLoggedIn");
 const isAuthorized = require("../Middlewares/Timetable/isAuthorized");
 const deleteTimetableController = require("../Controllers/Timetable/deleteTimetableController");
+const getCollaboratorsController = require("../Controllers/Timetable/getCollaboratorsController");
+const removeCollaboratorController = require("../Controllers/Timetable/removeCollaboratorController");
 
 const router = require("express").Router();
 
@@ -38,6 +40,20 @@ router.delete(
     isLoggedIn,
     isAuthorized,
     deleteTimetableController
+);
+
+router.get(
+    "/getCollaborators/:id",
+    isLoggedIn,
+    isAuthorized,
+    getCollaboratorsController
+);
+
+router.delete(
+    "/removeCollaborator/:id",
+    isLoggedIn,
+    isAuthorized,
+    removeCollaboratorController
 );
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const Timetable = require("../../Models/Timetable");
+const createNotification = require("../../Utilities/Notification/createNotification");
 
 const addCollaboratorsController = async (req, res) => {
     try {
@@ -10,22 +11,34 @@ const addCollaboratorsController = async (req, res) => {
             return res.status(404).json({ message: "Timetable not found" });
         }
 
-        const newCollaborators = [];
-
-        // Iterate over the array of collaborator IDs
-        for (const collaboratorId of collaboratorIds) {
-            if (!timetable?.collaborators?.includes(collaboratorId)) {
-                timetable?.collaborators?.push(collaboratorId);
-                newCollaborators?.push(collaboratorId);
-            }
-        }
-
-        await timetable?.save();
+        const newCollaborators = collaboratorIds.filter(
+            (collaboratorId) =>
+                !timetable.collaborators.includes(collaboratorId)
+        );
 
         if (newCollaborators.length === 0) {
             return res
-                .status(300)
+                .status(304)
                 .json({ message: "All collaborators were already added." });
+        }
+
+        timetable.collaborators.push(...newCollaborators);
+        await timetable.save();
+
+        const timetableDetails = `${timetable.className} - ${timetable.courseName}`;
+
+        // Notify the creator
+        await createNotification(
+            timetable.createdBy,
+            `New collaborators have been added to your timetable: ${timetableDetails}.`
+        );
+
+        // Notify each new collaborator
+        for (const collaboratorId of newCollaborators) {
+            await createNotification(
+                collaboratorId,
+                `You have been added as a collaborator to the timetable: ${timetableDetails}.`
+            );
         }
 
         return res.status(200).json({
@@ -38,13 +51,5 @@ const addCollaboratorsController = async (req, res) => {
         return res.status(500).json({ message: error.message, error });
     }
 };
-// let f = async () => {
-//     const t = await Timetable.find().populate("createdBy");
-//     let t1 = await Timetable.findOne({
-//         className: "SY",
-//         departmentName: "BCA",
-//     }).populate("createdBy");
-//     console.log(t1);
-// };
-// f();
+
 module.exports = addCollaboratorsController;

@@ -23,6 +23,7 @@ app.use("/api/setting", require("./routes/settingsRoutes"));
 app.use("/api/message", require("./routes/messageRoutes"));
 app.use("/api/testimonial", require("./routes/testimonialRoutes"));
 app.use("/api/profile", require("./routes/profileRoutes"));
+app.use("/api/notification", require("./routes/notificationRoutes"));
 
 app.listen(port, () => {
     console.log(`TT Gen. backend listening on port ${port}`);
