@@ -1,4 +1,6 @@
 const Timetable = require("../../Models/Timetable");
+const User = require("../../Models/User");
+const Notification = require("../../Models/Notification");
 
 const editTimetableController = async (req, res) => {
     try {
@@ -18,6 +20,19 @@ const editTimetableController = async (req, res) => {
         timetable.timeSlots = timeSlots || timetable.timeSlots;
 
         await timetable.save();
+
+        const userIdsToNotify = [
+            timetable.createdBy,
+            ...timetable.collaborators,
+        ];
+        const notifications = userIdsToNotify.map((userId) => ({
+            userId,
+            message: `The timetable for ${
+                timetable?.className + "-" + timetable.courseName
+            } has been updated.`,
+            type: "info",
+        }));
+        await Notification.insertMany(notifications);
 
         return res
             .status(200)

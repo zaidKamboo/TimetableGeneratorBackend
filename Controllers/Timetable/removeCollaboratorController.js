@@ -21,6 +21,7 @@ const removeCollaboratorController = async (req, res) => {
                 .json({ message: "Collaborator not found in this timetable" });
         }
 
+        // Remove the collaborator
         timetable.collaborators = timetable.collaborators.filter(
             (id) => id.toString() !== collaboratorId
         );
@@ -28,9 +29,16 @@ const removeCollaboratorController = async (req, res) => {
 
         const timetableDetails = `${timetable.className} - ${timetable.courseName}`;
 
+        // Fetch the collaborator's details
+        const collaborator = await User.findById(collaboratorId, "name").lean();
+        if (!collaborator) {
+            return res.status(404).json({ message: "Collaborator not found" });
+        }
+
+        // Create notifications
         await createNotification(
             timetable.createdBy,
-            `A collaborator has been removed from your timetable: ${timetableDetails}.`
+            `${collaborator.name} has been removed from your timetable: ${timetableDetails}.`
         );
 
         await createNotification(
@@ -44,6 +52,7 @@ const removeCollaboratorController = async (req, res) => {
             return res.status(404).json({ message: "No collaborators found" });
         }
 
+        // Fetch remaining collaborators' details
         const userPromises = collaboratorIds.map((id) =>
             User.findById(id, "name email _id").lean()
         );

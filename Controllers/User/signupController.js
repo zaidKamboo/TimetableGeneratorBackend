@@ -22,7 +22,7 @@ const signupController = async (req, res) => {
             expiresIn: "1h",
         });
         return res.status(201).json({
-            message: "User registered successfully",
+            message: "User registered successfully.",
             token,
             user,
         });

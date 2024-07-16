@@ -1,4 +1,5 @@
 const Timetable = require("../../Models/Timetable");
+const User = require("../../Models/User");
 const createNotification = require("../../Utilities/Notification/createNotification");
 
 const addCollaboratorsController = async (req, res) => {
@@ -27,17 +28,28 @@ const addCollaboratorsController = async (req, res) => {
 
         const timetableDetails = `${timetable.className} - ${timetable.courseName}`;
 
+        // Fetch details of new collaborators
+        const collaboratorsDetails = await Promise.all(
+            newCollaborators.map((collaboratorId) =>
+                User.findById(collaboratorId, "name").lean()
+            )
+        );
+
+        const collaboratorNames = collaboratorsDetails
+            .map((collaborator) => collaborator.name)
+            .join(", ");
+
         // Notify the creator
         await createNotification(
             timetable.createdBy,
-            `New collaborators have been added to your timetable: ${timetableDetails}.`
+            `New collaborators (${collaboratorNames}) have been added to your timetable: ${timetableDetails}.`
         );
 
         // Notify each new collaborator
-        for (const collaboratorId of newCollaborators) {
+        for (const collaborator of collaboratorsDetails) {
             await createNotification(
-                collaboratorId,
-                `You have been added as a collaborator to the timetable: ${timetableDetails}.`
+                collaborator._id,
+                `${collaborator.name}, you have been added as a collaborator to the timetable: ${timetableDetails}.`
             );
         }
 
