@@ -28,7 +28,7 @@ app.use("/api/user", require("./routers/userRouter"));
 app.use("/api/timetable", require("./routers/timetableRouter"));
 app.use("/api/analytics", require("./routers/analyticsRouter"));
 app.use("/api/setting", require("./routers/settingsRouter"));
-app.use("/api/message", require("./routers/contactMessagesRouter"));
+app.use("/api/contact", require("./routers/contactMessagesRouter"));
 app.use("/api/testimonial", require("./routers/testimonialRouter"));
 app.use("/api/profile", require("./routers/profileRouter"));
 app.use("/api/notification", require("./routers/notificationRouter"));

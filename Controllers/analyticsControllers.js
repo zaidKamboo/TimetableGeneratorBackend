@@ -133,7 +133,7 @@ const getAnalyticsController = async (_, res) => {
     }
 };
 
-const getProfileAnalyticsController = async (req, res) => {
+const getProfileAnalyticsController = async (_, res) => {
     try {
         const profileCountByTimezone = await Profile.aggregate([
             {
@@ -216,6 +216,7 @@ const getProfileAnalyticsController = async (req, res) => {
         res.status(500).json({ message: "Failed to fetch profile analytics" });
     }
 };
+
 const getSettingAnalyticsController = async (_, res) => {
     try {
         const analyticsData = await Setting.aggregate([
@@ -268,6 +269,7 @@ const getSettingAnalyticsController = async (_, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
 const getTestimonialsAnalyticsController = async (_, res) => {
     try {
         const testimonials = await Testimonial.find().populate("user", "name");
@@ -303,6 +305,7 @@ const getTestimonialsAnalyticsController = async (_, res) => {
         });
     }
 };
+
 module.exports = {
     getAnalyticsController,
     getProfileAnalyticsController,
