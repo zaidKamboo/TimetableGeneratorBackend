@@ -1,8 +1,8 @@
 const {
     markAsReadNotificationController,
     deleteNotificationController,
-} = require("../Controllers/notificationControllers");
-const { isLoggedIn } = require("../Middlewares/userMiddlewares");
+} = require("../controllers/notificationControllers");
+const { isLoggedIn } = require("../middlewares/userMiddlewares");
 const router = require("express").Router();
 
 router.put("/markAsRead/:id", isLoggedIn, markAsReadNotificationController);

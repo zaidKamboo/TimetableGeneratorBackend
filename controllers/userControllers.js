@@ -1,9 +1,9 @@
-const Notification = require("../Models/Notification");
-const { JWT_SECRET } = require("../Contants");
-const Profile = require("../Models/Profile");
-const Setting = require("../Models/Setting");
-const Testimonial = require("../Models/Testimonial");
-const User = require("../Models/User");
+const Notification = require("../models/notification");
+const { JWT_SECRET } = require("../contants");
+const Profile = require("../models/profile");
+const Setting = require("../models/setting");
+const Testimonial = require("../models/testimonial");
+const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const maxAge = 24 * 60 * 60 * 1000;

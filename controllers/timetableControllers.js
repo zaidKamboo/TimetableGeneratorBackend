@@ -1,9 +1,9 @@
-const Timetable = require("../Models/Timetable");
-const User = require("../Models/User");
-const Notification = require("../Models/Notification");
+const Timetable = require("../models/timetable");
+const User = require("../models/user");
+const Notification = require("../models/notification");
 
-const Profile = require("../Models/Profile");
-const createNotification = require("../Utilities/Notification/createNotification");
+const Profile = require("../models/profile");
+const createNotification = require("../Utilities/notification/createNotification");
 
 const createTimetableController = async (req, res) => {
     try {

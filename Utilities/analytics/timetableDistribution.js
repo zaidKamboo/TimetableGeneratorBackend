@@ -1,4 +1,4 @@
-const Timetable = require("../../Models/Timetable");
+const Timetable = require("../../models/timetable");
 
 const timetableDistribution = async () => {
     const distribution = await Timetable.aggregate([

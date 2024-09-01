@@ -1,4 +1,4 @@
-const Timetable = require("../Models/Timetable");
+const Timetable = require("../models/timetable");
 
 const isAuthorized = async (req, res, next) => {
     const timetableId = req.params.id;

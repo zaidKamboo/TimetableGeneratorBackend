@@ -1,4 +1,4 @@
-const Message = require("../Models/Message");
+const Message = require("../models/message");
 
 const getMessagesController = async (req, res) => {
     try {

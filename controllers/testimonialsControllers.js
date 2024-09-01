@@ -1,5 +1,5 @@
-const Testimonial = require("../Models/Testimonial");
-const Profile = require("../Models/Profile");
+const Testimonial = require("../models/testimonial");
+const Profile = require("../models/profile");
 const addTestimonialController = async (req, res) => {
     try {
         const { user, title, message, rating } = req.body;

@@ -1,11 +1,11 @@
-const Message = require("../Models/Message");
-const Profile = require("../Models/Profile");
-const Setting = require("../Models/Setting");
-const Testimonial = require("../Models/Testimonial");
-const Timetable = require("../Models/Timetable");
-const User = require("../Models/User");
-const timetableCreationTrend = require("../Utilities/Analytics/timetableCreationTrend");
-const timetableDistribution = require("../Utilities/Analytics/timetableDistribution");
+const Message = require("../models/message");
+const Profile = require("../models/profile");
+const Setting = require("../models/setting");
+const Testimonial = require("../models/testimonial");
+const Timetable = require("../models/timetable");
+const User = require("../models/user");
+const timetableCreationTrend = require("../Utilities/analytics/timetableCreationTrend");
+const timetableDistribution = require("../Utilities/analytics/timetableDistribution");
 
 const getAnalyticsController = async (_, res) => {
     try {

@@ -1,4 +1,4 @@
-const Setting = require("../Models/Setting");
+const Setting = require("../models/setting");
 
 const validateFields = (
     user,

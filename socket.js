@@ -1,7 +1,7 @@
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
-const ChatMessage = require("./Models/ChatMessage");
-const Profile = require("./Models/Profile");
+const ChatMessage = require("./models/chatMessage");
+const Profile = require("./models/profile");
 
 const setupSocket = (expressServer) => {
     const io = new Server(expressServer, {

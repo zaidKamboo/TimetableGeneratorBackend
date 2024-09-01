@@ -1,5 +1,5 @@
 const express = require("express");
-const connectToDb = require("./Configs/databaseConfig");
+const connectToDb = require("./configs/databaseConfig");
 const app = express();
 const cors = require("cors");
 const port = 5000;
@@ -16,7 +16,7 @@ cron.schedule("0 0 * * *", async () => {
 app.use(express.json());
 app.use(
     cors({
-        origin: ["http://localhost:5173"],
+        origin: ["http://localhost:5173", "http://localhost:5174"],
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
         credentials: true,
     })
@@ -34,6 +34,6 @@ app.use("/api/profile", require("./routers/profileRouter"));
 app.use("/api/notification", require("./routers/notificationRouter"));
 
 const expressServer = app.listen(port, () => {
-    console.log(`TT Gen. backend listening on port ${port}`);
+    console.log(`TT Gen. backend listening on http://localhost:${port}`);
 });
 setupSocket(expressServer);

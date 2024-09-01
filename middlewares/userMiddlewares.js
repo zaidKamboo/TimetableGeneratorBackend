@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-const User = require("../Models/User");
-const { JWT_SECRET } = require("../Contants");
+const User = require("../models/user");
+const { JWT_SECRET } = require("../contants");
 
 const isLoggedIn = async (req, res, next) => {
     const { authToken } = req.cookies;

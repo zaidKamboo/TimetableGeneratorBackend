@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Timetable = require("../../Models/Timetable");
+const Timetable = require("../../models/timetable");
 
 const timetableCreationTrend = async () => {
     const trend = await Timetable.aggregate([
