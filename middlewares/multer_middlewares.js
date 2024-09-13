@@ -1,4 +1,4 @@
-const { uploadAvatarConfig } = require("../configs/multerConfigs");
+const { uploadAvatarConfig } = require("../configs/multer_configs");
 
 const uploadAvatarMiddleware = (req, res, next) => {
     uploadAvatarConfig.single("avatar")(req, res, (err) => {

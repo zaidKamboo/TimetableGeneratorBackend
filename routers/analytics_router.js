@@ -3,9 +3,9 @@ const {
     getSettingAnalyticsController,
     getProfileAnalyticsController,
     getTestimonialsAnalyticsController,
-} = require("../controllers/analyticsControllers");
+} = require("../controllers/analytics_controllers");
 
-const { isLoggedIn, isAdmin } = require("../middlewares/userMiddlewares");
+const { isLoggedIn, isAdmin } = require("../middlewares/user_middlewares");
 
 const router = require("express").Router();
 

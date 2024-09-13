@@ -1,5 +1,5 @@
 const Notification = require("../models/notification");
-const { JWT_SECRET } = require("../contants");
+const { JWT_SECRET } = require("../utils");
 const Profile = require("../models/profile");
 const Setting = require("../models/setting");
 const Testimonial = require("../models/testimonial");

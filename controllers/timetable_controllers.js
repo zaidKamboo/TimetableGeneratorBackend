@@ -3,7 +3,7 @@ const User = require("../models/user");
 const Notification = require("../models/notification");
 
 const Profile = require("../models/profile");
-const createNotification = require("../Utilities/notification/createNotification");
+const createNotification = require("../utils/notification/create_notification");
 
 const createTimetableController = async (req, res) => {
     try {
@@ -252,26 +252,43 @@ const getTimetableByCourseAndClassAndDeptName = async (req, res) => {
                 .json({ message: "Timetable not found", timetable: [] });
         }
 
-        const collaboratorsWithDetails = await Promise.all(
-            timetable.collaborators.map(async (collaboratorId) => {
-                const collaborator = await User.findById(collaboratorId).lean();
-                const profile = await Profile.findOne({
-                    user: collaboratorId,
-                })
-                    .select("avatar")
-                    .lean();
-                return {
-                    _id: collaborator._id,
-                    name: collaborator.name,
-                    email: collaborator.email,
-                    avatar: profile ? profile.avatar : null,
-                };
-            })
-        );
+        const collaboratorsIds = Array.isArray(timetable.collaborators)
+            ? timetable.collaborators
+            : [];
+
+        const collaboratorsWithDetails =
+            collaboratorsIds.length > 0
+                ? await Promise.all(
+                      collaboratorsIds.map(async (collaboratorId) => {
+                          const collaborator = await User.findById(
+                              collaboratorId
+                          ).lean();
+                          const profile = await Profile.findOne({
+                              user: collaboratorId,
+                          })
+                              .select("avatar")
+                              .lean();
+
+                          // If collaborator doesn't exist, return a default value (or skip based on your requirement)
+                          if (!collaborator) {
+                              return null;
+                          }
+
+                          return {
+                              _id: collaborator._id,
+                              name: collaborator.name,
+                              email: collaborator.email,
+                              avatar: profile ? profile.avatar : null,
+                          };
+                      })
+                  )
+                : []; 
+
+        const validCollaborators = collaboratorsWithDetails.filter(Boolean);
 
         const populatedTimetable = {
             ...timetable,
-            collaborators: collaboratorsWithDetails,
+            collaborators: validCollaborators,
         };
 
         return res.status(200).json({
@@ -280,9 +297,15 @@ const getTimetableByCourseAndClassAndDeptName = async (req, res) => {
         });
     } catch (error) {
         console.error("Error fetching timetable:", error);
-        res.status(500).json({ message: error?.message, error });
+        return res
+            .status(500)
+            .json({
+                message: error?.message || "Internal server error",
+                error,
+            });
     }
 };
+
 
 const getTimetableController = async (req, res) => {
     try {

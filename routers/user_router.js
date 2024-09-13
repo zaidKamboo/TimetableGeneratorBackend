@@ -5,8 +5,8 @@ const {
     getNotificationsController,
     getUsersAndProfilesController,
     logoutController,
-} = require("../controllers/userControllers");
-const { isLoggedIn, isAdmin } = require("../middlewares/userMiddlewares");
+} = require("../controllers/user_controllers");
+const { isLoggedIn, isAdmin } = require("../middlewares/user_middlewares");
 
 const router = require("express").Router();
 

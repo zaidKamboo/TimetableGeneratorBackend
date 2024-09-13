@@ -4,8 +4,8 @@ const Setting = require("../models/setting");
 const Testimonial = require("../models/testimonial");
 const Timetable = require("../models/timetable");
 const User = require("../models/user");
-const timetableCreationTrend = require("../Utilities/analytics/timetableCreationTrend");
-const timetableDistribution = require("../Utilities/analytics/timetableDistribution");
+const timetableCreationTrend = require("../utils/analytics/timetable_creation_trend");
+const timetableDistribution = require("../utils/analytics/timetable_distribution");
 
 const getAnalyticsController = async (_, res) => {
     try {

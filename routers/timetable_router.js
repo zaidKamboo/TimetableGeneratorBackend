@@ -1,8 +1,8 @@
-const { isLoggedIn } = require("../middlewares/userMiddlewares");
+const { isLoggedIn } = require("../middlewares/user_middlewares");
 const {
     isAuthorized,
     isOwner,
-} = require("../middlewares/timetablemiddlewares");
+} = require("../middlewares/timetable_middlewares");
 const {
     getTimetablesController,
     getUserTimetablesController,
@@ -14,7 +14,7 @@ const {
     deleteTimetableController,
     getCollaboratorsController,
     removeCollaboratorController,
-} = require("../controllers/timetableControllers");
+} = require("../controllers/timetable_controllers");
 
 const router = require("express").Router();
 

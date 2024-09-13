@@ -1,12 +1,12 @@
 const express = require("express");
-const connectToDb = require("./configs/databaseConfig");
+const connectToDb = require("./configs/database_config");
 const app = express();
 const cors = require("cors");
 const port = 5000;
 const cron = require("node-cron");
-const deactivateInactiveUsers = require("./Utilities/deactivateInactiveUsers");
 const setupSocket = require("./socket");
 const cookieParser = require("cookie-parser");
+const { deactivateInactiveUsers } = require("./utils");
 
 cron.schedule("0 0 * * *", async () => {
     console.log("Running user maintenance job...");
@@ -24,14 +24,16 @@ app.use(
 app.use(cookieParser());
 connectToDb();
 
-app.use("/api/user", require("./routers/userRouter"));
-app.use("/api/timetable", require("./routers/timetableRouter"));
-app.use("/api/analytics", require("./routers/analyticsRouter"));
-app.use("/api/setting", require("./routers/settingsRouter"));
-app.use("/api/contact", require("./routers/contactMessagesRouter"));
-app.use("/api/testimonial", require("./routers/testimonialRouter"));
-app.use("/api/profile", require("./routers/profileRouter"));
-app.use("/api/notification", require("./routers/notificationRouter"));
+app.use("/api/user", require("./routers/user_router"));
+app.use("/api/timetable", require("./routers/timetable_router"));
+app.use("/api/analytics", require("./routers/analytics_router"));
+app.use("/api/setting", require("./routers/settings_router"));
+app.use("/api/contact", require("./routers/contact_messages_router"));
+app.use("/api/testimonial", require("./routers/testimonial_router"));
+app.use("/api/profile", require("./routers/profile_router"));
+app.use("/api/notification", require("./routers/notification_router"));
+app.use("/api/department", require("./routers/department_router"));
+app.use("/api/course", require("./routers/course_router"));
 
 const expressServer = app.listen(port, () => {
     console.log(`TT Gen. backend listening on http://localhost:${port}`);

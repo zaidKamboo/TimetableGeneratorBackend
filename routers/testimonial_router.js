@@ -2,8 +2,8 @@ const {
     addTestimonialController,
     editTestimonialController,
     getTestimonialsController,
-} = require("../controllers/testimonialsControllers");
-const { isLoggedIn } = require("../middlewares/userMiddlewares");
+} = require("../controllers/testimonials_controllers");
+const { isLoggedIn } = require("../middlewares/user_middlewares");
 const router = require("express").Router();
 
 router.post("/addTestimonial", isLoggedIn, addTestimonialController);

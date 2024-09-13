@@ -1,12 +1,12 @@
 const router = require("express").Router();
-const { isLoggedIn } = require("../middlewares/userMiddlewares");
-const { uploadAvatarMiddleware } = require("../middlewares/multermiddlewares");
+const { isLoggedIn } = require("../middlewares/user_middlewares");
+const { uploadAvatarMiddleware } = require("../middlewares/multer_middlewares");
 const {
     getProfileController,
     addProfileController,
     updateProfileController,
     deleteProfileController,
-} = require("../controllers/profileControllers");
+} = require("../controllers/profile_controllers");
 
 router.get("/getProfile/:id", isLoggedIn, getProfileController);
 router.post(

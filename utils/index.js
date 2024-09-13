@@ -1,3 +1,4 @@
+const JWT_SECRET = "This is my @Special Token.";
 const User = require("../models/user");
 
 const deactivateInactiveUsers = async (inactivePeriodDays) => {
@@ -16,4 +17,4 @@ const deactivateInactiveUsers = async (inactivePeriodDays) => {
     }
 };
 
-module.exports = deactivateInactiveUsers;
+module.exports = { JWT_SECRET, deactivateInactiveUsers };
