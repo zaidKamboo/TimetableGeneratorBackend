@@ -34,6 +34,7 @@ app.use("/api/profile", require("./routers/profile_router"));
 app.use("/api/notification", require("./routers/notification_router"));
 app.use("/api/department", require("./routers/department_router"));
 app.use("/api/course", require("./routers/course_router"));
+app.use("/api/class", require("./routers/class_router"));
 
 const expressServer = app.listen(port, () => {
     console.log(`TT Gen. backend listening on http://localhost:${port}`);
