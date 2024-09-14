@@ -449,7 +449,6 @@ const getUserTimetablesController = async (req, res) => {
                 };
             })
         );
-
         return res.status(200).json({
             message: "Fetched user timetables successfully",
             timetables: populatedTimetables,

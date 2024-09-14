@@ -4,8 +4,7 @@ const Course = require("../models/course");
 
 const addClassController = async (req, res) => {
     try {
-        const { name, departmentId, courseId } = req.body;
-
+        const { class: name, departmentId, courseId } = req.body;
         if (!name || !departmentId || !courseId) {
             return res.status(400).json({
                 success: false,
@@ -69,11 +68,11 @@ const getClassesController = async (_, res) => {
         const classes = await Class.find()
             .populate("department")
             .populate("course");
-
+        console.log(classes);
         return res.status(200).json({
             success: true,
             message: "Classes retrieved successfully.",
-            data: classes,
+            classes,
         });
     } catch (error) {
         console.error("Error in getClasses:", error);
