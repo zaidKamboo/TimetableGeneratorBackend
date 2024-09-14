@@ -1,7 +1,6 @@
 const Timetable = require("../models/timetable");
 const User = require("../models/user");
 const Notification = require("../models/notification");
-
 const Profile = require("../models/profile");
 const createNotification = require("../utils/notification/create_notification");
 

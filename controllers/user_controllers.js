@@ -1,11 +1,12 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
 const Notification = require("../models/notification");
 const { JWT_SECRET } = require("../utils");
 const Profile = require("../models/profile");
 const Setting = require("../models/setting");
 const Testimonial = require("../models/testimonial");
 const User = require("../models/user");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const maxAge = 24 * 60 * 60 * 1000;
 
 const signupController = async (req, res) => {

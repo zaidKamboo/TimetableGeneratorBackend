@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const Timetable = require("../../models/timetable");
 
 const timetableCreationTrend = async () => {

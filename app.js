@@ -1,12 +1,14 @@
 const express = require("express");
-const connectToDb = require("./configs/database_config");
-const app = express();
-const cors = require("cors");
-const port = 5000;
 const cron = require("node-cron");
-const setupSocket = require("./socket");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
+
+const connectToDb = require("./configs/database_config");
+const setupSocket = require("./socket");
 const { deactivateInactiveUsers } = require("./utils");
+
+const app = express();
+const port = 5000;
 
 cron.schedule("0 0 * * *", async () => {
     console.log("Running user maintenance job...");
