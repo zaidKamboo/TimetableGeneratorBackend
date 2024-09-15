@@ -23,6 +23,7 @@ const isLoggedIn = async (req, res, next) => {
         res?.status(401)?.json({ message: "Token is invalid or expired" });
     }
 };
+
 const isAdmin = (req, res, next) => {
     if (!req.user || !req.user.role) {
         return res

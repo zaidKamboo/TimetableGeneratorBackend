@@ -7,6 +7,14 @@ const departmentSchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
+        hodName: {
+            type: String,
+            required: true,
+        },
+        hodSign: {
+            type: String,
+            required: true,
+        },
         createdAt: {
             type: Date,
             default: Date.now,

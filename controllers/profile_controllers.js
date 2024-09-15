@@ -78,7 +78,7 @@ const addProfileController = async (req, res) => {
 
 const updateProfileController = async (req, res) => {
     try {
-        const id = req.params.id;
+        const { id } = req.params;
         const {
             fullName,
             email,
