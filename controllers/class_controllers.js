@@ -63,12 +63,28 @@ const addClassController = async (req, res) => {
     }
 };
 
+const getClassController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const cls = await Class.findById(id)
+            .populate("course")
+            .populate("department");
+        if (!id || !cls._id)
+            return res.status(404).json({ message: "Class not found." });
+        return res
+            .status(200)
+            .json({ message: "Fetched class successfully.", class: cls });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message, error });
+    }
+};
+
 const getClassesController = async (_, res) => {
     try {
         const classes = await Class.find()
             .populate("department")
             .populate("course");
-        console.log(classes);
         return res.status(200).json({
             success: true,
             message: "Classes retrieved successfully.",
@@ -84,4 +100,51 @@ const getClassesController = async (_, res) => {
     }
 };
 
-module.exports = { addClassController, getClassesController };
+const editClassController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { className: name, department, course } = req.body;
+        if (!id || !name || !department || !course)
+            return res.status(400).json({ message: "Invalid details." });
+
+        const nc = await Class.findByIdAndUpdate(
+            id,
+            {
+                name,
+                department,
+                course,
+            },
+            { new: true }
+        );
+
+        return res
+            .status(201)
+            .json({ message: "Updated Class successfully.", class: nc });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message, error });
+    }
+};
+
+const deleteClassController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!id) return res.status(400).json({ message: "Invalid data." });
+
+        const d = await Class.findByIdAndDelete(id);
+        return res
+            .status(201)
+            .json({ message: "Deleted Class successfully.", class: d });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message, error });
+    }
+};
+
+module.exports = {
+    addClassController,
+    getClassesController,
+    getClassController,
+    editClassController,
+    deleteClassController,
+};

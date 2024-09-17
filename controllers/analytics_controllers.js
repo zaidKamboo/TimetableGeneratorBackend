@@ -4,6 +4,9 @@ const Setting = require("../models/setting");
 const Testimonial = require("../models/testimonial");
 const Timetable = require("../models/timetable");
 const User = require("../models/user");
+const Department = require("../models/department");
+const Course = require("../models/course");
+const Class = require("../models/class");
 const timetableCreationTrend = require("../utils/analytics/timetable_creation_trend");
 const timetableDistribution = require("../utils/analytics/timetable_distribution");
 
@@ -15,6 +18,10 @@ const getAnalyticsController = async (_, res) => {
         const profilesCount = await Profile.countDocuments();
         const settingsCount = await Setting.countDocuments();
         const testimonialsCount = await Testimonial.countDocuments();
+        const departmentsCount = await Department.countDocuments();
+        const coursesCount = await Course.countDocuments();
+        const classesCount = await Class.countDocuments();
+
         const creationTrend = await timetableCreationTrend();
         const distribution = await timetableDistribution();
 
@@ -63,7 +70,7 @@ const getAnalyticsController = async (_, res) => {
             { $sort: { _id: 1 } },
         ]);
 
-        const settingsDistribution = await Setting.aggregate([
+        const coursesDistribution = await Course.aggregate([
             {
                 $group: {
                     _id: {
@@ -78,7 +85,22 @@ const getAnalyticsController = async (_, res) => {
             { $sort: { _id: 1 } },
         ]);
 
-        const testimonialsDistribution = await Testimonial.aggregate([
+        const classesDistribution = await Class.aggregate([
+            {
+                $group: {
+                    _id: {
+                        $dateToString: {
+                            format: "%Y-%m-%d",
+                            date: "$createdAt",
+                        },
+                    },
+                    count: { $sum: 1 },
+                },
+            },
+            { $sort: { _id: 1 } },
+        ]);
+
+        const departmentsDistribution = await Department.aggregate([
             {
                 $group: {
                     _id: {
@@ -112,6 +134,21 @@ const getAnalyticsController = async (_, res) => {
                 dates: profilesDistribution.map((data) => data._id),
                 counts: profilesDistribution.map((data) => data.count),
             },
+            coursesCount,
+            coursesDistribution: {
+                dates: coursesDistribution.map((data) => data._id),
+                counts: coursesDistribution.map((data) => data.count),
+            },
+            classesCount,
+            classesDistribution: {
+                dates: classesDistribution.map((data) => data._id),
+                counts: classesDistribution.map((data) => data.count),
+            },
+            departmentsCount,
+            departmentsDistribution: {
+                dates: departmentsDistribution.map((data) => data._id),
+                counts: departmentsDistribution.map((data) => data.count),
+            },
             settingsCount,
             settingsDistribution: {
                 dates: settingsDistribution.map((data) => data._id),
@@ -132,6 +169,7 @@ const getAnalyticsController = async (_, res) => {
         return res.status(500).json({ message: error?.message, error });
     }
 };
+
 
 const getProfileAnalyticsController = async (_, res) => {
     try {

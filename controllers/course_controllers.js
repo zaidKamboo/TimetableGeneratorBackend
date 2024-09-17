@@ -59,8 +59,8 @@ const getCourseController = async (req, res) => {
     try {
         const { id } = req.params;
         if (!id) return res.status(404).json({ message: "Course not found." });
-        const course = await Course.findById(id);
-        if (!course._id)
+        const course = await Course.findById(id).populate("department");
+        if (!course?._id)
             return res.status(404).json({ message: "Course not found." });
 
         return res
@@ -75,18 +75,35 @@ const getCourseController = async (req, res) => {
 const editCourseController = async (req, res) => {
     try {
         const { id } = req.params;
-        const { department, name } = req.body;
+        const { department, courseName: name } = req.body;
+
+        if (!department || !name) {
+            return res.status(400).json({
+                message:
+                    "Invalid details. Both department and course name are required.",
+            });
+        }
+
         const course = await Course.findById(id);
-        if (!course._id)
+        if (!course) {
+            console.log("Course not found for ID:", id);
             return res.status(404).json({ message: "Course not found." });
-        course.department = department || course.department;
-        course.name = name || course.name;
-        await course.save();
-        return res
-            .status(201)
-            .json({ message: "Updated course successfully.", course });
+        }
+
+        const updatedCourse = await Course.findByIdAndUpdate(
+            id,
+            { name, department },
+            { new: true }
+        );
+
+        console.log("Updated Course:", updatedCourse);
+
+        return res.status(200).json({
+            message: "Updated course successfully.",
+            course: updatedCourse,
+        });
     } catch (error) {
-        console.log(error);
+        console.log("Error updating course:", error);
         return res.status(500).json({ message: error.message, error });
     }
 };
@@ -104,6 +121,7 @@ const deleteCourseController = async (req, res) => {
         return res.status(500).json({ message: error.message, error });
     }
 };
+
 module.exports = {
     addCourseController,
     getCoursesController,
