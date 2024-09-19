@@ -100,7 +100,38 @@ const getAnalyticsController = async (_, res) => {
             { $sort: { _id: 1 } },
         ]);
 
+        const settingsDistribution = await Setting.aggregate([
+            {
+                $group: {
+                    _id: {
+                        $dateToString: {
+                            format: "%Y-%m-%d",
+                            date: "$createdAt",
+                        },
+                    },
+                    count: { $sum: 1 },
+                },
+            },
+            { $sort: { _id: 1 } },
+        ]);
+
         const departmentsDistribution = await Department.aggregate([
+            {
+                $group: {
+                    _id: {
+                        $dateToString: {
+                            format: "%Y-%m-%d",
+                            date: "$createdAt",
+                        },
+                    },
+                    count: { $sum: 1 },
+                },
+            },
+            { $sort: { _id: 1 } },
+        ]);
+
+        // Add this block to fetch testimonials distribution
+        const testimonialsDistribution = await Testimonial.aggregate([
             {
                 $group: {
                     _id: {
