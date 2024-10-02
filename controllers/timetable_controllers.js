@@ -237,13 +237,16 @@ const getCollaboratorsController = async (req, res) => {
 
 const getTimetableByCourseAndClassAndDeptName = async (req, res) => {
     const { courseName, className, departmentName } = req.query;
-
     try {
         const timetable = await Timetable.findOne({
             courseName,
             className,
             departmentName,
-        }).lean();
+        })
+            .populate("departmentName")
+            .populate("courseName")
+            .populate("className")
+            .lean();
 
         if (!timetable) {
             return res
@@ -281,7 +284,7 @@ const getTimetableByCourseAndClassAndDeptName = async (req, res) => {
                           };
                       })
                   )
-                : []; 
+                : [];
 
         const validCollaborators = collaboratorsWithDetails.filter(Boolean);
 
@@ -296,20 +299,21 @@ const getTimetableByCourseAndClassAndDeptName = async (req, res) => {
         });
     } catch (error) {
         console.error("Error fetching timetable:", error);
-        return res
-            .status(500)
-            .json({
-                message: error?.message || "Internal server error",
-                error,
-            });
+        return res.status(500).json({
+            message: error?.message || "Internal server error",
+            error,
+        });
     }
 };
-
 
 const getTimetableController = async (req, res) => {
     try {
         const _id = req.params.id;
-        const timetable = await Timetable.findOne({ _id }).lean();
+        const timetable = await Timetable.findOne({ _id })
+            .populate("departmentName")
+            .populate("courseName")
+            .populate("className")
+            .lean();
 
         if (!timetable) {
             return res.status(404).json({ message: "Timetable not found." });
@@ -351,9 +355,12 @@ const getTimetableController = async (req, res) => {
     }
 };
 
-const getTimetablesController = async (req, res) => {
+const getTimetablesController = async (_, res) => {
     try {
-        const timetables = await Timetable.find();
+        const timetables = await Timetable.find()
+            .populate("departmentName")
+            .populate("courseName")
+            .populate("className");
 
         const populatedTimetables = await Promise.all(
             timetables.map(async (timetable) => {
@@ -402,7 +409,11 @@ const getUserTimetablesController = async (req, res) => {
         // Fetch timetables created by the user
         const createdTimetables = await Timetable.find({
             createdBy: userId,
-        }).lean();
+        })
+            .populate("departmentName")
+            .populate("courseName")
+            .populate("className")
+            .lean();
 
         // Fetch timetables where the user is a collaborator
         const collaboratedTimetables = await Timetable.find({
@@ -470,6 +481,7 @@ const removeCollaboratorController = async (req, res) => {
 
         const isCollaboratorPresent =
             timetable.collaborators.includes(collaboratorId);
+        console.log(timetableId,collaboratorId,isCollaboratorPresent);
         if (!isCollaboratorPresent) {
             return res
                 .status(400)

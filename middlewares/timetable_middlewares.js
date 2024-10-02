@@ -22,8 +22,8 @@ const isAuthorized = async (req, res, next) => {
 const isOwner = async (req, res, next) => {
     try {
         const timetableId = req.params.id;
-        const userId = req.user._id;
-
+        const userId = req.user?._id;
+        console.log("DETS : ", timetableId, userId);
         const timetable = await Timetable.findById(timetableId);
 
         if (!timetable) {
@@ -38,7 +38,7 @@ const isOwner = async (req, res, next) => {
         next();
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Server error." });
+        return res.status(500).json({ message: "Server error.", error });
     }
 };
 

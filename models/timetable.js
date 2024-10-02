@@ -12,9 +12,21 @@ const timeSlotSchema = new mongoose.Schema(
 
 const timetableSchema = new mongoose.Schema(
     {
-        departmentName: { type: String, required: true },
-        className: { type: String, required: true },
-        courseName: { type: String, required: true },
+        departmentName: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Department",
+            required: true,
+        },
+        className: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Class",
+            required: true,
+        },
+        courseName: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Course",
+            required: true,
+        },
         days: { type: [String], required: true },
         timeSlots: {
             allDays: [timeSlotSchema],
