@@ -25,7 +25,7 @@ const signupController = async (req, res) => {
             password: hashedPassword,
         });
         const token = jwt.sign({ id: user._id }, JWT_SECRET, {
-            expiresIn: "1h",
+            expiresIn: "24h",
         });
         res.cookie("authToken", token);
         return res.status(201).json({
@@ -38,26 +38,6 @@ const signupController = async (req, res) => {
         return res.status(500).json({ message: error?.message, error });
     }
 };
-// const insertUser = async () => {
-//     try {
-//         const name = "Rohit Sharma";
-//         const email = "rohitsharma100@gmail.com";
-//         const password = "nothing";
-//         const hashedPassword = await bcrypt.hash(password, 10);
-//         const user = await User.create({
-//             name,
-//             email,
-//             password: hashedPassword,
-//             createdAt: "2024-06-25T00:00:00.454+00:00",
-//             isActive: false,
-//         });
-//         console.log("Created", user);
-//     } catch (error) {
-//         console.log(error?.message, error);
-//     }
-// };
-// insertUser();
-
 const loginController = async (req, res) => {
     try {
         const { email, password } = req.body;
